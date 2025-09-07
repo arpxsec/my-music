@@ -33,24 +33,25 @@
   </div>
 
   <script>
-    // ---------- EDIT ONLY: list your songs here (filenames must match what's in /music folder) ----------
+    // ✅ Your actual 5 songs with exact filenames
     const songs = [
-      { title: "Kesariya", artist: "Arijit Singh", filename: "kesariya.mp3" },
-      { title: "Raataan Lambiyan", artist: "Jubin Nautiyal - Asees Kaur", filename: "raataan-lambiyan.mp3" },
-      { title: "Brown Munde", artist: "AP Dhillon", filename: "brown-munde.mp3" }
+      { title: "Meri Maa Ne Bandha Dora", artist: "Haryanvi Mashup", filename: "Meri maa ne bandha Dora Haryanvi mashup.mp3" },
+      { title: "Jindagi Ek Kiraye Ka Ghar Hai", artist: "Islamic Devotional", filename: "Jindagi Ek Kiraye Ka Ghar Hai Islamic Devotional.mp3" },
+      { title: "Apne Maa Baap Ka Tu Dil Na Dukha", artist: "Unknown", filename: "Apne Maa Baap KaTu Dil Na Dukha.mp3" },
+      { title: "Soch", artist: "Hardy Sandhu", filename: "Soch Hardy Sandhu Full Video Song Romantic Punjabi Song.mp3" },
+      { title: "Mitti Di Khushboo", artist: "Ayushmann Khurrana", filename: "Mitti Di Khushboo FULL VIDEO Song Ayushmann Khurrana.mp3" }
     ];
-    // -------------------------------------------------------------------------------------------------
 
     const listEl = document.getElementById('list');
     const player = document.getElementById('player');
     const recsEl = document.getElementById('recs');
 
-    // If index.html is in repo root and songs are in /music, relative path './music/<filename>' will work on GitHub Pages.
+    // Function to get file path (URL encode spaces automatically by browser)
     function getFileUrl(filename) {
       return `./music/${filename}`;
     }
 
-    // render
+    // Render the song list
     songs.forEach((s, i) => {
       const div = document.createElement('div');
       div.className = 'song';
@@ -65,7 +66,7 @@
       listEl.appendChild(div);
     });
 
-    // click handler
+    // Handle play button click
     listEl.addEventListener('click', (e) => {
       const btn = e.target.closest('button');
       if(!btn) return;
@@ -79,10 +80,9 @@
       player.src = url;
       player.play().catch(err => {
         console.warn('Play failed:', err);
-        // some browsers require user gesture; clicking the play button is a user gesture so should work
       });
 
-      // demo recommendations (replace with real backend fetch when ready)
+      // Fake recommendations for demo
       showRecs([
         { title: song.title + " (Live)", artist: song.artist },
         { title: "Another similar song", artist: "Demo Artist" },
