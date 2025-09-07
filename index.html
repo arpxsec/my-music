@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Music — GitHub Pages Demo</title>
+  <style>
+    body{font-family:Inter,Arial,sans-serif;background:#0b1220;color:#e8f0f7;margin:0;padding:28px}
+    h1{margin:0 0 14px 0;color:#7be2ff}
+    .wrap{max-width:900px;margin:0 auto}
+    .song{background:#0f1822;border:1px solid rgba(255,255,255,.04);padding:12px;border-radius:10px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .meta{display:flex;flex-direction:column}
+    button{background:#5bd6ff;border:0;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700;color:#002123}
+    audio{width:100%;margin-top:18px;border-radius:10px}
+    .recs{background:#07131a;padding:12px;border-radius:10px;margin-top:16px}
+    .hint{font-size:13px;color:#9fb0c0;margin-top:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Music Player (Hosted on GitHub Pages)</h1>
+    <p class="hint">Uploaded your MP3s to <code>music/</code> folder in this repo. Click Play to stream.</p>
+
+    <div id="list"></div>
+
+    <h3>Now playing</h3>
+    <audio id="player" controls></audio>
+
+    <div class="recs">
+      <strong>Recommendations</strong>
+      <ul id="recs"></ul>
+    </div>
+  </div>
+
+  <script>
+    // ✅ Your actual 5 songs with exact filenames
+    const songs = [
+      { title: "Meri Maa Ne Bandha Dora", artist: "Haryanvi Mashup", filename: "Meri maa ne bandha Dora Haryanvi mashup.mp3" },
+      { title: "Jindagi Ek Kiraye Ka Ghar Hai", artist: "Islamic Devotional", filename: "Jindagi Ek Kiraye Ka Ghar Hai Islamic Devotional.mp3" },
+      { title: "Apne Maa Baap Ka Tu Dil Na Dukha", artist: "Unknown", filename: "Apne Maa Baap KaTu Dil Na Dukha.mp3" },
+      { title: "Soch", artist: "Hardy Sandhu", filename: "Soch Hardy Sandhu Full Video Song Romantic Punjabi Song.mp3" },
+      { title: "Mitti Di Khushboo", artist: "Ayushmann Khurrana", filename: "Mitti Di Khushboo FULL VIDEO Song Ayushmann Khurrana.mp3" }
+    ];
+
+    const listEl = document.getElementById('list');
+    const player = document.getElementById('player');
+    const recsEl = document.getElementById('recs');
+
+    // Function to get file path (URL encode spaces automatically by browser)
+    function getFileUrl(filename) {
+      return `./music/${filename}`;
+    }
+
+    // Render the song list
+    songs.forEach((s, i) => {
+      const div = document.createElement('div');
+      div.className = 'song';
+      div.innerHTML = `
+        <div class="meta">
+          <div style="font-weight:700">${s.title}</div>
+          <div style="color:#9fb0c0;font-size:13px">${s.artist}</div>
+        </div>
+        <div>
+          <button data-index="${i}">Play</button>
+        </div>`;
+      listEl.appendChild(div);
+    });
+
+    // Handle play button click
+    listEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      const idx = Number(btn.dataset.index);
+      const song = songs[idx];
+      playSong(song);
+    });
+
+    function playSong(song){
+      const url = getFileUrl(song.filename);
+      player.src = url;
+      player.play().catch(err => {
+        console.warn('Play failed:', err);
+      });
+
+      // Fake recommendations for demo
+      showRecs([
+        { title: song.title + " (Live)", artist: song.artist },
+        { title: "Another similar song", artist: "Demo Artist" },
+        { title: "You might also like", artist: "Demo Artist 2" }
+      ]);
+    }
+
+    function showRecs(list){
+      recsEl.innerHTML = "";
+      list.forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = `${r.title} — ${r.artist}`;
+        recsEl.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
